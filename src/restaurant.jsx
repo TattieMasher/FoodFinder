@@ -1,9 +1,10 @@
 import { IoClose } from "react-icons/io5";
 import { IoMdHeart } from "react-icons/io";
 import logo from "./assets/Prince.png";
+import { getDistance, convertDistance } from 'geolib';
 import "./styles/Card.css"
 
-export default function Restaurant({ data }) {
+export default function Restaurant({ data, userLocation }) {
   // Destructure the necessary details from the data prop.
   const {
     displayName, // displayName is an object with text and languageCode
@@ -23,9 +24,24 @@ export default function Restaurant({ data }) {
     ? `https://places.googleapis.com/v1/${photos[0].name}/media?key=${apiKey}&maxWidthPx=900`
     : logo; // Use the first photo reference or fallback to the logo (TODO: Change. Maybe make a "No image found" image?)
 
-  const distance = 'TBD'; // TODO: Replace with actual distance later
+  const restaurantCoords = { // Construct user location object
+    latitude: data.location.latitude,
+    longitude: data.location.longitude
+  };
 
-  console.log("Image url:", imageUrl);
+  const userCoords = { // Construct restaurant location object
+    latitude: userLocation.latitude,
+    longitude: userLocation.longitude
+  };
+
+  const distance = convertDistance( 
+      getDistance( // Get the geolib distance between the two points
+        userCoords,
+        restaurantCoords
+  ), 'mi'); // Convert to miles
+
+  console.log("User location: ", userCoords);
+  console.log("Restaurant location: ", restaurantCoords);
 
   return (
     <div className="restaurant_card">

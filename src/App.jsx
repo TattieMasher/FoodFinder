@@ -50,20 +50,49 @@ const fetchNearbyRestaurants = async () => {
 
 function App() {
   const [restaurants, setRestaurants] = useState([]);
+  const [userLocation, setUserLocation] = useState({ latitude: null, longitude: null });
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     const getRestaurants = async () => {
-      try {
-        const response = await fetchNearbyRestaurants();
-        // Extracting the `places` array from the response object.
-        const fetchedRestaurants = response.places || [];
-        setRestaurants(fetchedRestaurants);
-        setLoading(false);
-      } catch (error) {
-        console.error('Failed to fetch restaurants:', error);
-        setRestaurants([]);  // Set to empty array on error
-        setLoading(false);
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+          const { latitude, longitude } = position.coords;
+          setUserLocation({ latitude, longitude }); // Save user location
+          const apiKey = import.meta.env.VITE_PLACES_API_KEY;
+          const apiUrl = 'https://places.googleapis.com/v1/places:searchNearby';
+
+          const requestBody = {
+            includedTypes: ["restaurant"],
+            locationRestriction: {
+              circle: {
+                center: { latitude, longitude },
+                radius: 1500.0
+              }
+            }
+          };
+
+          try {
+            const response = await axios.post(apiUrl, requestBody, {
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Goog-Api-Key': apiKey,
+                'X-Goog-FieldMask': 'places.id,places.formattedAddress,places.location,places.displayName,places.googleMapsUri,places.priceLevel,places.websiteUri,places.photos'
+              }
+            });
+
+            setRestaurants(response.data.places || []);
+            setLoading(false);
+          } catch (error) {
+            console.error('Error fetching data: ', error);
+            setRestaurants([]);
+            setLoading(false);
+          }
+        }, (error) => {
+          console.error('Geolocation not supported.', error);
+        });
+      } else {
+        console.error("Geolocation not supported by the browser.");
       }
     };
   
@@ -82,7 +111,7 @@ function App() {
       </div>
       <div className="restaurant_card_container">
         {restaurants.length > 0 ? restaurants.map((restaurant, index) => (
-            <Restaurant key={index} data={restaurant} />
+            <Restaurant key={index} data={restaurant} userLocation={userLocation} />
           )) : <div>No restaurants found.</div> // If no restaurant objects in array
         } 
       </div>

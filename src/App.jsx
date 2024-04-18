@@ -55,7 +55,7 @@ function App() {
     const getRestaurants = async () => {
       const fetchedRestaurants = await fetchNearbyRestaurants();
       setRestaurants(fetchedRestaurants);
-      console.log("Restaurants retrieved: ", fetchedRestaurants); // Help here, GPT
+      console.log("Restaurants retrieved: ", fetchedRestaurants);
     };
   
     getRestaurants();

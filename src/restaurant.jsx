@@ -34,11 +34,12 @@ export default function Restaurant({ data, userLocation }) {
     longitude: userLocation.longitude
   };
 
-  const distance = convertDistance( 
+  const distance = Math.round(
+    convertDistance( 
       getDistance( // Get the geolib distance between the two points
         userCoords,
         restaurantCoords
-  ), 'mi'); // Convert to miles
+  ), 'mi') * 10) / 10; // Convert to miles, then round to 1 d.p.
 
   console.log("User location: ", userCoords);
   console.log("Restaurant location: ", restaurantCoords);

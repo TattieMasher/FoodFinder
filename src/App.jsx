@@ -28,7 +28,7 @@ const fetchNearbyRestaurants = async () => {
             headers: {
               'Content-Type': 'application/json',
               'X-Goog-Api-Key': apiKey,
-              'X-Goog-FieldMask': 'places.id,places.formattedAddress,places.location,places.displayName,places.googleMapsUri,places.priceLevel,places.websiteUri'
+              'X-Goog-FieldMask': 'places.id,places.formattedAddress,places.location,places.displayName,places.googleMapsUri,places.priceLevel,places.websiteUri,places.photos'
             }
           });
 
@@ -50,16 +50,29 @@ const fetchNearbyRestaurants = async () => {
 
 function App() {
   const [restaurants, setRestaurants] = useState([]);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     const getRestaurants = async () => {
-      const fetchedRestaurants = await fetchNearbyRestaurants();
-      setRestaurants(fetchedRestaurants);
-      console.log("Restaurants retrieved: ", fetchedRestaurants);
+      try {
+        const response = await fetchNearbyRestaurants();
+        // Extracting the `places` array from the response object.
+        const fetchedRestaurants = response.places || [];
+        setRestaurants(fetchedRestaurants);
+        setLoading(false);
+      } catch (error) {
+        console.error('Failed to fetch restaurants:', error);
+        setRestaurants([]);  // Set to empty array on error
+        setLoading(false);
+      }
     };
   
     getRestaurants();
   }, []);
+
+  if (isLoading) { // Notify user that page hasn't been processed yet
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="app_container">
@@ -68,10 +81,13 @@ function App() {
         <IoChatbubblesOutline className="app_icon"></IoChatbubblesOutline>
       </div>
       <div className="restaurant_card_container">
-        <Restaurant />
+        {restaurants.length > 0 ? restaurants.map((restaurant, index) => (
+            <Restaurant key={index} data={restaurant} />
+          )) : <div>No restaurants found.</div> // If no restaurant objects in array
+        } 
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

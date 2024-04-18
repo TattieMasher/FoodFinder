@@ -1,15 +1,38 @@
 import { IoClose } from "react-icons/io5";
 import { IoMdHeart } from "react-icons/io";
-import logo from "./assets/Prince.png"; // TODO: Change me, will be loaded from API later
+import logo from "./assets/Prince.png";
 import "./styles/Card.css"
 
-export default function Restaurant() {
+export default function Restaurant({ data }) {
+  // Destructure the necessary details from the data prop.
+  const {
+    displayName, // displayName is an object with text and languageCode
+    formattedAddress,
+    googleMapsUri,
+    location, // This is an object with latitude and longitude
+    photos, // Array of photos
+  } = data;
+
+  // Handle the displayName object
+  const name = displayName && displayName.text ? displayName.text : 'Restaurant';
+
+  // Handle the imageUrl
+  // Use the Google Place Photo API to construct the URL for the image (https://developers.google.com/maps/documentation/places/web-service/place-photos)
+  const apiKey = import.meta.env.VITE_PLACES_API_KEY; // Grab API key from .env again
+  const imageUrl = photos && photos.length > 0
+    ? `https://places.googleapis.com/v1/${photos[0].name}/media?key=${apiKey}&maxWidthPx=900`
+    : logo; // Use the first photo reference or fallback to the logo (TODO: Change. Maybe make a "No image found" image?)
+
+  const distance = 'TBD'; // TODO: Replace with actual distance later
+
+  console.log("Image url:", imageUrl);
+
   return (
     <div className="restaurant_card">
-      <img className="restaurant_pic" id="restaurant_pic_1" src={logo}></img>
+      <img className="restaurant_pic" src={imageUrl} alt={name} />
       <div className="restaurant_card_header_container">
-        <h2>Restaurant name</h2>
-        <h3>0.1 miles</h3>
+        <h2>{name}</h2>
+        <h4>{distance} miles</h4> {/* TODO */}
       </div>
       <div className="restaurant_card_icon_container">
         <IoClose className="restaurant_icon dislike_icon"></IoClose>

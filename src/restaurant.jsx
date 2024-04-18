@@ -4,7 +4,7 @@ import logo from "./assets/Prince.png";
 import { getDistance, convertDistance } from 'geolib';
 import "./styles/Card.css"
 
-export default function Restaurant({ data, userLocation }) {
+export default function Restaurant({ data, userLocation, handleDislike, className }) {
   // Destructure the necessary details from the data prop.
   const {
     displayName, // displayName is an object with text and languageCode
@@ -44,17 +44,17 @@ export default function Restaurant({ data, userLocation }) {
   console.log("User location: ", userCoords);
   console.log("Restaurant location: ", restaurantCoords);
 
-  return (
-    <div className="restaurant_card">
-      <img className="restaurant_pic" src={imageUrl} alt={name} />
+    return (
+    <div className={`restaurant_card ${className}`}>
+      <img className="restaurant_pic" src={imageUrl} alt={data.displayName.text} />
       <div className="restaurant_card_header_container">
         <h2>{name}</h2>
-        <h4>{distance} miles</h4> {/* TODO */}
+        <h4>{distance} miles</h4>
       </div>
       <div className="restaurant_card_icon_container">
-        <IoClose className="restaurant_icon dislike_icon"></IoClose>
-        <IoMdHeart className="restaurant_icon like_icon"></IoMdHeart>
+        <IoClose className="restaurant_icon dislike_icon" onClick={handleDislike} />
+        <IoMdHeart className="restaurant_icon like_icon" />
       </div>
     </div>
-  )
+  );
 }

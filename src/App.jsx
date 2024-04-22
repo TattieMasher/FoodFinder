@@ -101,14 +101,16 @@ function App() {
   }, []);
 
   const handleDislike = () => {
-    // If not at the end
-    if (currentIndex < restaurants.length - 1) {
-      console.log("index: ", currentIndex);
-      setCurrentIndex(prevIndex => prevIndex + 1); // TODO: Apply CSS Transform slide to side
-    } else {
-      // TODO: Special card once reached the end?
-      console.log("No more restaurants");
-    }
+    setCurrentIndex((prevIndex) => {
+      const nextIndex = prevIndex + 1;
+      if (nextIndex >= restaurants.length - 1) {
+        // If we've reached the end, we could loop back to the start or handle the "end" state.
+        console.log("End of the list reached");
+        return prevIndex; // Maintain the current index if at the end of the list
+      } else {
+        return nextIndex; // Increment the index
+      }
+    });
   };
 
   if (isLoading) { // Notify user that page hasn't been processed yet

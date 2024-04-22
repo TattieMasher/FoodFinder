@@ -7,6 +7,8 @@
   padding-bottom: 10px;
   padding-bottom: 10px;
   color: #4A4A48;
+  touch-action: pan-y pan-x;
+  user-select: none;
 }
 
 .restaurant_pic {
@@ -62,4 +64,10 @@
 
 .like_icon {
   color: #60D48B;
+}
+
+.restaurant_card_exit_animation {
+  transform: translateX(-100%);
+  opacity: 0;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 }

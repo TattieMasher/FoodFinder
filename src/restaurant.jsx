@@ -2,9 +2,24 @@ import { IoClose } from "react-icons/io5";
 import { IoMdHeart } from "react-icons/io";
 import logo from "./assets/Prince.png";
 import { getDistance, convertDistance } from 'geolib';
+import { useSpring, animated } from 'react-spring';
+import { useDrag } from 'react-use-gesture';
 import "./styles/Card.css"
 
 export default function Restaurant({ data, userLocation, handleDislike, className }) {
+  const [{ x }, set] = useSpring(() => ({ x: 0 }));
+
+  const bind = useDrag(({ down, movement: [mx], direction: [xDir], distance, cancel }) => {
+    if (down && distance > window.innerWidth * 0.15) {
+      // if dragged more than 15% to the left, trigger dislike
+      if (xDir < 0) {
+        handleDislike();
+        cancel();
+      }
+    }
+    set({ x: down ? mx : 0 });
+  });
+
   // Destructure the necessary details from the data prop.
   const {
     displayName, // displayName is an object with text and languageCode
@@ -45,8 +60,16 @@ export default function Restaurant({ data, userLocation, handleDislike, classNam
   console.log("Restaurant location: ", restaurantCoords);
 
     return (
-    <div className={`restaurant_card ${className}`}>
-      <img className="restaurant_pic" src={imageUrl} alt={data.displayName.text} />
+      <animated.div
+      className={`restaurant_card ${className}`}
+      {...bind()}
+      style={{ x }}
+    >
+      <img className="restaurant_pic" 
+        src={imageUrl} 
+        alt={data.displayName.text} 
+        onDragStart={(e) => e.preventDefault() // stops the default image dragging and allows the card to be dragged from here
+      } />
       <div className="restaurant_card_header_container">
         <h2>{name}</h2>
         <h4>{distance} miles</h4>
@@ -55,6 +78,6 @@ export default function Restaurant({ data, userLocation, handleDislike, classNam
         <IoClose className="restaurant_icon dislike_icon" onClick={handleDislike} />
         <IoMdHeart className="restaurant_icon like_icon" />
       </div>
-    </div>
+    </animated.div>
   );
 }

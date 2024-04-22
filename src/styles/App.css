@@ -5,10 +5,12 @@
   margin: 0 auto;
   font-family: Roboto;
   font-weight: 100;
+  overflow: hidden; /* Prevent page scrolling */
 }
 
 .app_container {
   height: 100vh;
+  width: 407px;
   padding: 0px 2px;
   background-color: #FEFEFC;
   border-radius: 5px;
@@ -25,4 +27,10 @@
 .app_icon {
   width: 50px;
   height: 50px;
+}
+
+.restaurant_card_container {
+  position: relative;
+  height: 500px; /* Needs a fixed height */
+  width: 100%;
 }

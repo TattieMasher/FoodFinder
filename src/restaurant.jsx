@@ -10,8 +10,8 @@ export default function Restaurant({ data, userLocation, handleDislike, classNam
   const [{ x }, set] = useSpring(() => ({ x: 0 }));
 
   const bind = useDrag(({ down, movement: [mx], direction: [xDir], distance, cancel }) => {
-    if (down && distance > window.innerWidth * 0.15) {
-      // if dragged more than 15% to the left, trigger dislike
+    if (down && distance > window.innerWidth * 0.075) {
+      // if dragged more than 7.5% to the left, trigger dislike. Seems best through experimentation.
       if (xDir < 0) {
         handleDislike();
         cancel();

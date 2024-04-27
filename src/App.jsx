@@ -113,6 +113,19 @@ function App() {
     });
   };
 
+  const handleLike = () => {
+    setCurrentIndex((prevIndex) => {
+      const nextIndex = prevIndex + 1;
+      if (nextIndex >= restaurants.length - 1) {
+        // If we've reached the end, we could loop back to the start or handle the "end" state.
+        console.log("End of the list reached");
+        return prevIndex; // Maintain the current index if at the end of the list
+      } else {
+        return nextIndex; // Increment the index
+      }
+    });
+  };
+
   if (isLoading) { // Notify user that page hasn't been processed yet
     return <div>Loading...</div>;
   }
@@ -133,6 +146,7 @@ function App() {
                 data={restaurants[currentIndex + 1]}
                 userLocation={userLocation}
                 handleDislike={handleDislike} // Pass the handleDislike function
+                handleLike={handleLike} // Pass handleLike also
                 className="next"
               />
             )}
@@ -141,6 +155,7 @@ function App() {
               data={restaurants[currentIndex]}
               userLocation={userLocation}
               handleDislike={handleDislike} // Pass the handleDislike function down
+              handleLike={handleLike} // Pass handleLike also
               className="current"
             />
           </>

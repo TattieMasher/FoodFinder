@@ -6,14 +6,19 @@ import { useSpring, animated } from 'react-spring';
 import { useDrag } from 'react-use-gesture';
 import "./styles/Card.css"
 
-export default function Restaurant({ data, userLocation, handleDislike, className }) {
+export default function Restaurant({ data, userLocation, handleDislike, handleLike, className }) {
   const [{ x }, set] = useSpring(() => ({ x: 0 }));
 
   const bind = useDrag(({ down, movement: [mx], direction: [xDir], distance, cancel }) => {
-    if (down && distance > window.innerWidth * 0.075) {
-      // if dragged more than 7.5% to the left, trigger dislike. Seems best through experimentation.
+    if (down && distance > window.innerWidth * 0.08) {
+      // If dragged more than 7.5% to the left, trigger dislike
       if (xDir < 0) {
         handleDislike();
+        cancel();
+      }
+      // If dragged more than 7.5% to the right, trigger like
+      else if (xDir > 0) {
+        handleLike(); // You need to define this function similar to handleDislike
         cancel();
       }
     }
@@ -55,9 +60,6 @@ export default function Restaurant({ data, userLocation, handleDislike, classNam
         userCoords,
         restaurantCoords
   ), 'mi') * 10) / 10; // Convert to miles, then round to 1 d.p.
-
-  console.log("User location: ", userCoords);
-  console.log("Restaurant location: ", restaurantCoords);
 
     return (
       <animated.div

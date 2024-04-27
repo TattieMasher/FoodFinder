@@ -10,13 +10,13 @@ export default function Restaurant({ data, userLocation, handleDislike, handleLi
   const [{ x }, set] = useSpring(() => ({ x: 0 }));
 
   const bind = useDrag(({ down, movement: [mx], direction: [xDir], distance, cancel }) => {
-    if (down && distance > window.innerWidth * 0.08) {
-      // If dragged more than 7.5% to the left, trigger dislike
+    if (down && distance > window.innerWidth * 0.1) {
+      // If dragged more than 10% to the left, trigger dislike
       if (xDir < 0) {
         handleDislike();
         cancel();
       }
-      // If dragged more than 7.5% to the right, trigger like
+      // If dragged more than 10% to the right, trigger like
       else if (xDir > 0) {
         handleLike(); // You need to define this function similar to handleDislike
         cancel();
@@ -78,7 +78,7 @@ export default function Restaurant({ data, userLocation, handleDislike, handleLi
       </div>
       <div className="restaurant_card_icon_container">
         <IoClose className="restaurant_icon dislike_icon" onClick={handleDislike} />
-        <IoMdHeart className="restaurant_icon like_icon" />
+        <IoMdHeart className="restaurant_icon like_icon" onClick={handleLike}/>
       </div>
     </animated.div>
   );

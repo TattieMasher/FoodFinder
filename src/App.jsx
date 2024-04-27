@@ -1,6 +1,9 @@
+import { ChakraProvider } from '@chakra-ui/react';
+
 import { IoIosSettings } from "react-icons/io";
 import { IoChatbubblesOutline } from "react-icons/io5";
 import Restaurant from './restaurant';
+import SettingsModal from './settingsModal';
 import './styles/App.css';
 import { useState, useEffect } from "react";
 import axios from 'axios';
@@ -49,6 +52,7 @@ const fetchNearbyRestaurants = async () => {
 };
 
 function App() {
+  const [isSettingsOpen, setSettingsOpen] = useState(false);
   const [restaurants, setRestaurants] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userLocation, setUserLocation] = useState({ latitude: null, longitude: null });
@@ -131,37 +135,40 @@ function App() {
   }
 
   return (
-    <div className="app_container">
-      <div className="app_icon_container">
-        <IoIosSettings className="app_icon" />
-        <IoChatbubblesOutline className="app_icon" />
-      </div>
-      <div className="restaurant_card_container">
-        {restaurants.length > 0 && currentIndex < restaurants.length && (
-          <>
-            {currentIndex < restaurants.length - 1 && (
-              // Render the next restaurant beneath the current one
+    <ChakraProvider>
+      <div className="app_container">
+        <div className="app_icon_container">
+          <IoIosSettings className="app_icon" onClick={() => setSettingsOpen(true)} />
+          <IoChatbubblesOutline className="app_icon" />
+        </div>
+        <div className="restaurant_card_container">
+          {restaurants.length > 0 && currentIndex < restaurants.length && (
+            <>
+              {currentIndex < restaurants.length - 1 && (
+                // Render the next restaurant beneath the current one
+                <Restaurant
+                  key={`next_${restaurants[currentIndex + 1].id}`}
+                  data={restaurants[currentIndex + 1]}
+                  userLocation={userLocation}
+                  handleDislike={handleDislike} // Pass the handleDislike function
+                  handleLike={handleLike} // Pass handleLike also
+                  className="next"
+                />
+              )}
               <Restaurant
-                key={`next_${restaurants[currentIndex + 1].id}`}
-                data={restaurants[currentIndex + 1]}
+                key={`current_${restaurants[currentIndex].id}`}
+                data={restaurants[currentIndex]}
                 userLocation={userLocation}
-                handleDislike={handleDislike} // Pass the handleDislike function
+                handleDislike={handleDislike} // Pass the handleDislike function down
                 handleLike={handleLike} // Pass handleLike also
-                className="next"
+                className="current"
               />
-            )}
-            <Restaurant
-              key={`current_${restaurants[currentIndex].id}`}
-              data={restaurants[currentIndex]}
-              userLocation={userLocation}
-              handleDislike={handleDislike} // Pass the handleDislike function down
-              handleLike={handleLike} // Pass handleLike also
-              className="current"
-            />
-          </>
-        )}
+            </>
+          )}
+        </div>
+        <SettingsModal isOpen={isSettingsOpen} onClose={() => setSettingsOpen(false)} />
       </div>
-    </div>
+    </ChakraProvider>
   );
 }
 

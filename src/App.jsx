@@ -85,33 +85,21 @@ function App() {
     getRestaurants();
   }, []);
 
-  const handleDislike = (id) => {
-    updateLikesDislikes(id, false);
-    console.log("Index: ", currentIndex);
-    setCurrentIndex((prevIndex) => {
-      const nextIndex = prevIndex + 1;
-      if (nextIndex >= restaurants.length - 1) {
-        // If we've reached the end, we could loop back to the start or handle the "end" state.
-        console.log("End of the list reached");
-        return prevIndex; // Maintain the current index if at the end of the list
-      } else {
-        return nextIndex; // Increment the index
-      }
+  const handleInteraction = (id, liked) => {
+    updateLikesDislikes(id, liked);
+  
+    setRestaurants(currentRestaurants => {
+      const updatedRestaurants = currentRestaurants.filter(restaurant => restaurant.id !== id);
+      return updatedRestaurants;
     });
   };
-
-  const handleLike = (id) => {
-    updateLikesDislikes(id, true);
-    setCurrentIndex((prevIndex) => {
-      const nextIndex = prevIndex + 1;
-      if (nextIndex >= restaurants.length - 1) {
-        // If we've reached the end, we could loop back to the start or handle the "end" state.
-        console.log("End of the list reached");
-        return prevIndex; // Maintain the current index if at the end of the list
-      } else {
-        return nextIndex; // Increment the index
-      }
-    });
+  
+  const handleDislike = id => {
+    handleInteraction(id, false);
+  };
+  
+  const handleLike = id => {
+    handleInteraction(id, true);
   };
 
   if (isLoading) { // Notify user that page hasn't been processed yet
@@ -134,8 +122,8 @@ function App() {
                   key={`next_${restaurants[currentIndex + 1].id}`}
                   data={restaurants[currentIndex + 1]}
                   userLocation={userLocation}
-                  handleDislike={() => handleDislike(restaurants[currentIndex + 1].id)} 
-                  handleLike={() => handleLike(restaurants[currentIndex + 1].id)}
+                  handleDislike={handleDislike} 
+                  handleLike={handleLike}
                   className="next"
                 />
             )}
@@ -144,8 +132,8 @@ function App() {
                 key={`current_${restaurants[currentIndex].id}`}
                 data={restaurants[currentIndex]}
                 userLocation={userLocation}
-                handleDislike={() => handleDislike(restaurants[currentIndex].id)}
-                handleLike={() => handleLike(restaurants[currentIndex].id)}
+                handleDislike={handleDislike}
+                handleLike={handleLike}
                 className="current"
               />
             )}

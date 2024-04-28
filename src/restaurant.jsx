@@ -18,7 +18,7 @@ export default function Restaurant({ data, userLocation, handleDislike, handleLi
       }
       // If dragged more than 10% to the right, trigger like
       else if (xDir > 0) {
-        handleLike(id); // You need to define this function similar to handleDislike
+        handleLike(id);
         cancel();
       }
     }

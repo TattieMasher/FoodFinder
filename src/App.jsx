@@ -64,7 +64,10 @@ function App() {
               }
             });
 
-            setRestaurants(response.data.places || []);
+            const likesDislikes = getLikesDislikes(); // Retrieve the current likes/dislikes from localStorage
+            const filteredRestaurants = response.data.places.filter(place => !(place.id in likesDislikes));
+      
+            setRestaurants(filteredRestaurants);
             setLoading(false);
           } catch (error) {
             console.error('Error fetching data: ', error);
@@ -125,27 +128,29 @@ function App() {
         <div className="restaurant_card_container">
           {restaurants.length > 0 && currentIndex < restaurants.length && (
             <>
-              {currentIndex < restaurants.length - 1 && (
-                // Render the next restaurant beneath the current one
+            {currentIndex < restaurants.length - 1 && 
+              !getLikesDislikes()[restaurants[currentIndex + 1].id] && ( // Check that the restaurant hasn't been liked/disliked already
                 <Restaurant
                   key={`next_${restaurants[currentIndex + 1].id}`}
                   data={restaurants[currentIndex + 1]}
                   userLocation={userLocation}
-                  handleDislike={handleDislike} // Pass the handleDislike function
-                  handleLike={handleLike} // Pass handleLike also
+                  handleDislike={() => handleDislike(restaurants[currentIndex + 1].id)} 
+                  handleLike={() => handleLike(restaurants[currentIndex + 1].id)}
                   className="next"
                 />
-              )}
+            )}
+            {!getLikesDislikes()[restaurants[currentIndex].id] && (
               <Restaurant
                 key={`current_${restaurants[currentIndex].id}`}
                 data={restaurants[currentIndex]}
                 userLocation={userLocation}
-                handleDislike={handleDislike} // Pass the handleDislike function down
-                handleLike={handleLike} // Pass handleLike also
+                handleDislike={() => handleDislike(restaurants[currentIndex].id)}
+                handleLike={() => handleLike(restaurants[currentIndex].id)}
                 className="current"
               />
-            </>
-          )}
+            )}
+          </>
+        )}
         </div>
         <SettingsModal 
           isOpen={isSettingsOpen} 

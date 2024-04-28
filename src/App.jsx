@@ -8,7 +8,7 @@ import './styles/App.css';
 import { useState, useEffect } from "react";
 import axios from 'axios';
 
-const getRadius = () => localStorage.getItem('searchRadius') || '5'; // Default to 5 if not set
+const getRadius = () => localStorage.getItem('searchRadius') || '2'; // Default to 2 if not set
 const setRadius = (radius) => localStorage.setItem('searchRadius', radius);
 
 const getLikesDislikes = () => JSON.parse(localStorage.getItem('likesDislikes')) || {};
@@ -17,6 +17,10 @@ const updateLikesDislikes = (id, like) => {
   const updated = { ...current, [id]: like };
   localStorage.setItem('likesDislikes', JSON.stringify(updated));
 };
+
+const convertMilesToMetres = (num) => {
+  return num * 1609;
+}
 
 function App() {
   const [isSettingsOpen, setSettingsOpen] = useState(false);
@@ -44,10 +48,12 @@ function App() {
             locationRestriction: {
               circle: {
                 center: { latitude, longitude },
-                radius: 1500.0
+                radius: convertMilesToMetres(parseInt(getRadius(), 10))
               }
             }
           };
+
+          console.log("Request body: ", requestBody);
 
           try {
             const response = await axios.post(apiUrl, requestBody, {

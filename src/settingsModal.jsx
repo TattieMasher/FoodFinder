@@ -55,7 +55,7 @@ import {
             </ModalBody>
             <ModalFooter display="flex" justifyContent="space-between">
               <Button colorScheme="red" onClick={onClose}>
-                Delete stored data
+                Delete data
               </Button>
               <Button colorScheme="blue" mr={3} onClick={handleSave}>
                 Save

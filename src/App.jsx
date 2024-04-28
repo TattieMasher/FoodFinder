@@ -110,7 +110,7 @@ function App() {
     id: "no-more",
     displayName: { text: "No More Restaurants", languageCode: "en" },
     formattedAddress: "You've seen it all!",
-    location: { latitude: 0, longitude: 0 }, // TODO: use user location to always show 0 miles
+    location: { ...userLocation },
     googleMapsUri: "",
     photos: [
       {

@@ -106,6 +106,21 @@ function App() {
     return <div>Loading...</div>;
   }
 
+  const noMoreRestaurantsData = {
+    id: "no-more",
+    displayName: { text: "No More Restaurants", languageCode: "en" },
+    formattedAddress: "You've seen it all!",
+    location: { latitude: 0, longitude: 0 }, // TODO: use user location to always show 0 miles
+    googleMapsUri: "",
+    photos: [
+      {
+        name: "placeholder-image", // TODO: Change to actual placeholder image
+      },
+    ],
+    priceLevel: null,
+    websiteUri: null,
+  };
+
   return (
     <ChakraProvider>
       <div className="app_container">
@@ -114,32 +129,28 @@ function App() {
           <IoChatbubblesOutline className="app_icon" />
         </div>
         <div className="restaurant_card_container">
-          {restaurants.length > 0 && currentIndex < restaurants.length && (
-            <>
-            {currentIndex < restaurants.length - 1 && 
-              !getLikesDislikes()[restaurants[currentIndex + 1].id] && ( // Check that the restaurant hasn't been liked/disliked already
-                <Restaurant
-                  key={`next_${restaurants[currentIndex + 1].id}`}
-                  data={restaurants[currentIndex + 1]}
-                  userLocation={userLocation}
-                  handleDislike={handleDislike} 
-                  handleLike={handleLike}
-                  className="next"
-                />
-            )}
-            {!getLikesDislikes()[restaurants[currentIndex].id] && (
-              <Restaurant
-                key={`current_${restaurants[currentIndex].id}`}
-                data={restaurants[currentIndex]}
-                userLocation={userLocation}
-                handleDislike={handleDislike}
-                handleLike={handleLike}
-                className="current"
-              />
-            )}
-          </>
+        {restaurants.length > 0 ? (
+          restaurants.map((restaurant, index) => (
+            <Restaurant
+              key={restaurant.id}
+              data={restaurant}
+              userLocation={userLocation}
+              handleDislike={handleDislike} 
+              handleLike={handleLike}
+              className={index === currentIndex ? "current" : "next"}
+            />
+          ))
+        ) : (
+          // Render the no more restaurants card
+          <Restaurant
+            key={noMoreRestaurantsData.id}
+            data={noMoreRestaurantsData}
+            userLocation={userLocation}
+            // no handleDislike or handleLike because this card is not interactable
+            className="current"
+          />
         )}
-        </div>
+      </div>
         <SettingsModal 
           isOpen={isSettingsOpen} 
           onClose={() => setSettingsOpen(false)} 

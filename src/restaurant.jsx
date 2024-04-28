@@ -13,12 +13,12 @@ export default function Restaurant({ data, userLocation, handleDislike, handleLi
     if (down && distance > window.innerWidth * 0.1) {
       // If dragged more than 10% to the left, trigger dislike
       if (xDir < 0) {
-        handleDislike();
+        handleDislike(id);
         cancel();
       }
       // If dragged more than 10% to the right, trigger like
       else if (xDir > 0) {
-        handleLike(); // You need to define this function similar to handleDislike
+        handleLike(id); // You need to define this function similar to handleDislike
         cancel();
       }
     }
@@ -27,6 +27,7 @@ export default function Restaurant({ data, userLocation, handleDislike, handleLi
 
   // Destructure the necessary details from the data prop.
   const {
+    id,
     displayName, // displayName is an object with text and languageCode
     formattedAddress,
     googleMapsUri,
@@ -77,8 +78,8 @@ export default function Restaurant({ data, userLocation, handleDislike, handleLi
         <h4>{distance} miles</h4>
       </div>
       <div className="restaurant_card_icon_container">
-        <IoClose className="restaurant_icon dislike_icon" onClick={handleDislike} />
-        <IoMdHeart className="restaurant_icon like_icon" onClick={handleLike}/>
+        <IoClose className="restaurant_icon dislike_icon" onClick={() => handleDislike(id)} />
+        <IoMdHeart className="restaurant_icon like_icon" onClick={() => handleLike(id)}/>
       </div>
     </animated.div>
   );

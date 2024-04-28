@@ -1,4 +1,5 @@
-// Import only the necessary components from Chakra UI
+import { useState} from "react";
+
 import {
     Modal,
     ModalOverlay,
@@ -20,11 +21,17 @@ import {
     NumberDecrementStepper
   } from '@chakra-ui/react';
   
-  export default function SettingsModal({ isOpen, onClose }) {
+  export default function SettingsModal({ isOpen, onClose, searchRadius, setSearchRadius }) {
+    const [localRadius, setLocalRadius] = useState(searchRadius);
+
     const handleSave = () => {
-        // TODO
-        onClose;
-    }
+      setSearchRadius(localRadius);
+      onClose();
+    };
+  
+    const handleRadiusChange = (valueAsString, valueAsNumber) => {
+      setLocalRadius(valueAsNumber);
+    };
 
     return (
       <>
@@ -36,7 +43,7 @@ import {
             <ModalBody>
             <FormControl>
               <FormLabel>Search radius</FormLabel>
-              <NumberInput defaultValue={5} min={1} max={50}>
+              <NumberInput defaultValue={searchRadius} min={1} max={30} value={localRadius} onChange={handleRadiusChange}>
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />
@@ -50,7 +57,7 @@ import {
               <Button colorScheme="red" onClick={onClose}>
                 Delete stored data
               </Button>
-              <Button colorScheme="blue" mr={3} onClick={onClose}>
+              <Button colorScheme="blue" mr={3} onClick={handleSave}>
                 Save
               </Button>
             </ModalFooter>

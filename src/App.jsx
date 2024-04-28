@@ -8,55 +8,27 @@ import './styles/App.css';
 import { useState, useEffect } from "react";
 import axios from 'axios';
 
-const fetchNearbyRestaurants = async () => {
-  return new Promise((resolve, reject) => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const { latitude, longitude } = position.coords;
-        const apiKey = import.meta.env.VITE_PLACES_API_KEY; // Taken from .env in root of project
-        const apiUrl = 'https://places.googleapis.com/v1/places:searchNearby'; // Places (New) endpoint
+const getRadius = () => localStorage.getItem('searchRadius') || '5'; // Default to 5 if not set
+const setRadius = (radius) => localStorage.setItem('searchRadius', radius);
 
-        const requestBody = {
-          includedTypes: ["restaurant"],
-          locationRestriction: {
-            circle: {
-              center: { latitude, longitude },
-              radius: 1500.0
-            }
-          }
-        };
-
-        try {
-          const response = await axios.post(apiUrl, requestBody, {
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Goog-Api-Key': apiKey,
-              'X-Goog-FieldMask': 'places.id,places.formattedAddress,places.location,places.displayName,places.googleMapsUri,places.priceLevel,places.websiteUri,places.photos'
-            }
-          });
-
-          console.log("API response: ", response.data);
-          resolve(response.data);
-        } catch (error) {
-          console.error('Error fetching data: ', error.response ? error.response.data : error);
-          reject(error);
-        }
-      }, (error) => {
-        console.error('Geolocation not supported.', error);
-        reject(error);
-      });
-    } else {
-      reject(new Error("Geolocation not supported."));
-    }
-  });
+const getLikesDislikes = () => JSON.parse(localStorage.getItem('likesDislikes')) || {};
+const updateLikesDislikes = (id, like) => {
+  const current = getLikesDislikes();
+  const updated = { ...current, [id]: like };
+  localStorage.setItem('likesDislikes', JSON.stringify(updated));
 };
 
 function App() {
   const [isSettingsOpen, setSettingsOpen] = useState(false);
+  const [searchRadius, setSearchRadius] = useState(getRadius());
   const [restaurants, setRestaurants] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userLocation, setUserLocation] = useState({ latitude: null, longitude: null });
   const [isLoading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setRadius(searchRadius);
+  }, [searchRadius]);
 
   useEffect(() => {
     const getRestaurants = async () => {
@@ -104,7 +76,9 @@ function App() {
     getRestaurants();
   }, []);
 
-  const handleDislike = () => {
+  const handleDislike = (id) => {
+    updateLikesDislikes(id, false);
+    console.log("Index: ", currentIndex);
     setCurrentIndex((prevIndex) => {
       const nextIndex = prevIndex + 1;
       if (nextIndex >= restaurants.length - 1) {
@@ -117,7 +91,8 @@ function App() {
     });
   };
 
-  const handleLike = () => {
+  const handleLike = (id) => {
+    updateLikesDislikes(id, true);
     setCurrentIndex((prevIndex) => {
       const nextIndex = prevIndex + 1;
       if (nextIndex >= restaurants.length - 1) {
@@ -166,7 +141,12 @@ function App() {
             </>
           )}
         </div>
-        <SettingsModal isOpen={isSettingsOpen} onClose={() => setSettingsOpen(false)} />
+        <SettingsModal 
+          isOpen={isSettingsOpen} 
+          onClose={() => setSettingsOpen(false)} 
+          searchRadius={searchRadius}
+          setSearchRadius={setSearchRadius}
+        />
       </div>
     </ChakraProvider>
   );

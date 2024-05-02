@@ -5,6 +5,7 @@ import { useSpring, animated } from 'react-spring';
 import { useDrag } from 'react-use-gesture';
 import { useState, useEffect } from "react";
 import "./styles/Card.css"
+import noMoreImage from './assets/NoMore.png'; // Used when no more restaurants are available
 
 export default function Restaurant({ data, userLocation, handleDislike, handleLike, className }) {
   const [dragDirection, setDragDirection] = useState(null); // Track the direction of the drag, defaulting to no direction
@@ -45,7 +46,9 @@ export default function Restaurant({ data, userLocation, handleDislike, handleLi
   } = data;
 
 
-  const imageUrl = photos.length > 0 ? photos[0].name : logo;
+  const imageUrl = photos.length > 0 && photos[0].name
+  ? `https://places.googleapis.com/v1/${photos[0].name}/media?key=${import.meta.env.VITE_PLACES_API_KEY}&maxWidthPx=900`
+  : noMoreImage;
 
   const distance = Math.round(
     convertDistance(getDistance({ latitude: userLocation.latitude, longitude: userLocation.longitude }, { latitude, longitude }), 'mi') * 10) / 10;

@@ -27,6 +27,7 @@ import {
     const handleSave = () => {
       setSearchRadius(localRadius);
       onClose();
+      window.location.reload();
     };
   
     const handleRadiusChange = (valueAsString, valueAsNumber) => {

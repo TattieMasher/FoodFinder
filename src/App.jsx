@@ -4,7 +4,6 @@ import { IoIosSettings } from "react-icons/io";
 import { IoChatbubblesOutline } from "react-icons/io5";
 
 import Restaurant from './restaurant';
-import noMoreImage from './assets/NoMore.png'; // Used when no more restaurants are available
 import SettingsModal from './settingsModal';
 import MatchModal from './matchModal';
 
@@ -121,7 +120,6 @@ function App() {
     googleMapsUri: "",
     photos: [
       {
-        name: noMoreImage,
       },
     ],
     priceLevel: null,

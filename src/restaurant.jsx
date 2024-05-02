@@ -1,6 +1,5 @@
 import { IoClose } from "react-icons/io5";
 import { IoMdHeart } from "react-icons/io";
-import logo from "./assets/Prince.png";
 import { getDistance, convertDistance } from 'geolib';
 import { useSpring, animated } from 'react-spring';
 import { useDrag } from 'react-use-gesture';
@@ -10,7 +9,7 @@ import "./styles/Card.css"
 export default function Restaurant({ data, userLocation, handleDislike, handleLike, className }) {
   const [dragDirection, setDragDirection] = useState(null); // Track the direction of the drag, defaulting to no direction
   const [{ x, opacity }, set] = useSpring(() => ({ x: 0, opacity: 1 }));
-
+  
   const bind = useDrag(({ down, movement: [mx], direction: [xDir], distance }) => {
     // Update the drag direction immediately upon moving, and maintain it unless the drag ends
     if (down && distance > window.innerWidth * 0.05) {
@@ -45,9 +44,8 @@ export default function Restaurant({ data, userLocation, handleDislike, handleLi
     location: { latitude, longitude }
   } = data;
 
-  const imageUrl = photos.length > 0
-    ? `https://places.googleapis.com/v1/${photos[0].name}/media?key=${import.meta.env.VITE_PLACES_API_KEY}&maxWidthPx=900`
-    : logo;
+
+  const imageUrl = photos.length > 0 ? photos[0].name : logo;
 
   const distance = Math.round(
     convertDistance(getDistance({ latitude: userLocation.latitude, longitude: userLocation.longitude }, { latitude, longitude }), 'mi') * 10) / 10;

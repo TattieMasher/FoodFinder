@@ -2,9 +2,13 @@ import { ChakraProvider } from '@chakra-ui/react';
 
 import { IoIosSettings } from "react-icons/io";
 import { IoChatbubblesOutline } from "react-icons/io5";
+
 import Restaurant from './restaurant';
 import SettingsModal from './settingsModal';
+import MatchModal from './matchModal';
+
 import './styles/App.css';
+
 import { useState, useEffect } from "react";
 import axios from 'axios';
 
@@ -24,6 +28,7 @@ const convertMilesToMetres = (num) => {
 
 function App() {
   const [isSettingsOpen, setSettingsOpen] = useState(false);
+  const [isMatchOpen, setIsMatchOpen] = useState(false);
   const [searchRadius, setSearchRadius] = useState(getRadius());
   const [restaurants, setRestaurants] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -100,6 +105,7 @@ function App() {
   
   const handleLike = id => {
     handleInteraction(id, true);
+    setIsMatchOpen(true); // TODO: Decide where/when to change this
   };
 
   if (isLoading) { // Notify user that page hasn't been processed yet
@@ -124,6 +130,10 @@ function App() {
   return (
     <ChakraProvider>
       <div className="app_container">
+        <MatchModal
+          isOpen={isMatchOpen}
+          onClose={() => setIsMatchOpen(false)}
+        />
         <div className="app_icon_container">
           <IoIosSettings className="app_icon" onClick={() => setSettingsOpen(true)} />
           <IoChatbubblesOutline className="app_icon" />

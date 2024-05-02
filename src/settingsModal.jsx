@@ -41,17 +41,17 @@ import {
             <ModalHeader>Settings</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-            <FormControl>
-              <FormLabel>Search radius</FormLabel>
-              <NumberInput defaultValue={searchRadius} min={1} max={30} value={localRadius} onChange={handleRadiusChange}>
-              <NumberInputField />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-            <FormHelperText>Distance in miles</FormHelperText>
-            </FormControl>
+              <FormControl>
+                <FormLabel>Search radius</FormLabel>
+                <NumberInput defaultValue={searchRadius} min={1} max={30} value={localRadius} onChange={handleRadiusChange}>
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+              <FormHelperText>Distance in miles</FormHelperText>
+              </FormControl>
             </ModalBody>
             <ModalFooter display="flex" justifyContent="space-between">
               <Button colorScheme="red" onClick={onClose}>

@@ -5,6 +5,7 @@ import { IoChatbubblesOutline } from "react-icons/io5";
 
 import Restaurant from './restaurant';
 import SettingsModal from './settingsModal';
+import ChatList from './chatListModal';
 import MatchModal from './matchModal';
 
 import './styles/App.css';
@@ -28,6 +29,7 @@ const convertMilesToMetres = (num) => {
 
 function App() {
   const [isSettingsOpen, setSettingsOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const [isMatchOpen, setIsMatchOpen] = useState(false);
   const [searchRadius, setSearchRadius] = useState(getRadius());
   const [restaurants, setRestaurants] = useState([]);
@@ -135,7 +137,7 @@ function App() {
         />
         <div className="app_icon_container">
           <IoIosSettings className="app_icon" onClick={() => setSettingsOpen(true)} />
-          <IoChatbubblesOutline className="app_icon" />
+          <IoChatbubblesOutline className="app_icon" onClick={() => setIsChatOpen(true)} />
         </div>
         <div className="restaurant_card_container">
         {restaurants.length > 0 ? (
@@ -165,6 +167,10 @@ function App() {
           onClose={() => setSettingsOpen(false)} 
           searchRadius={searchRadius}
           setSearchRadius={setSearchRadius}
+        />
+        <ChatList
+          isOpen={isChatOpen}
+          onClose={() => setIsChatOpen(false)}
         />
       </div>
     </ChakraProvider>

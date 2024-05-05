@@ -28,7 +28,6 @@
   margin: var(--body-margin);
   font-family: Roboto;
   font-weight: 100;
-  overflow-x: hidden;
 }
 
 .app_container {

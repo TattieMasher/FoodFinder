@@ -14,13 +14,14 @@ function ChatList({ isOpen, onClose }) {
   const [chats, setChats] = useState([]);
 
   useEffect(() => {
-    const loadChats = () => {
-      const chatData = JSON.parse(localStorage.getItem('chats')) || {};
-      setChats(Object.entries(chatData).filter(([_, data]) => data.liked));
-    };
-
-    loadChats();
-  }, []);
+    if (isOpen) {
+      const loadChats = () => {
+        const chatData = JSON.parse(localStorage.getItem('chats')) || {};
+        setChats(Object.entries(chatData).filter(([_, data]) => data.liked));
+      };
+      loadChats();
+    }
+  }, [isOpen]);
 
   return (
     <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
@@ -32,7 +33,7 @@ function ChatList({ isOpen, onClose }) {
           <List spacing={3}>
             {chats.length > 0 ? chats.map(([id, chat]) => (
               <ListItem key={id} onClick={() => onClose(id)} cursor="pointer">
-                {chat.messages[chat.messages.length - 1].text}
+                <strong>{chat.name}</strong> - {chat.messages[chat.messages.length - 1].text}
               </ListItem>
             )) : <p>No active chats</p>}
           </List>

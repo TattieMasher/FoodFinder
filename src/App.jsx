@@ -8,6 +8,8 @@ import SettingsModal from './settingsModal';
 import ChatList from './chatListModal';
 import MatchModal from './matchModal';
 
+import { initialiseChat } from './chatHelper';
+
 import './styles/App.css';
 
 import { useState, useEffect } from "react";
@@ -106,8 +108,12 @@ function App() {
   };
   
   const handleLike = id => {
-    handleInteraction(id, true);
-    setIsMatchOpen(true); // TODO: Decide where/when to change this
+    const restaurantData = restaurants.find(r => r.id === id);
+    if (restaurantData) {
+      handleInteraction(id, true);
+      initialiseChat(id, restaurantData);
+      setIsMatchOpen(true);
+    }
   };
 
   if (isLoading) { // Notify user that page hasn't been processed yet

@@ -3,7 +3,7 @@
   --card-width: 400px;
 }
 
-/* For screens smaller than 480px */
+/* For smaller screens */
 @media (max-width: 400px) {
   :root {
     --card-width: calc(100vw - 20px);

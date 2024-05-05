@@ -1,7 +1,19 @@
+:root {
+  /* Default values for larger screens */
+  --card-width: 400px;
+}
+
+/* For screens smaller than 480px */
+@media (max-width: 400px) {
+  :root {
+    --card-width: calc(100vw - 20px);
+  }
+}
+
 .restaurant_card {
   position: absolute; /* Absolute positioning required for stacking */
   min-height: 600px;
-  max-width: 500px;
+  max-width: var(--card-width);
   margin: 5vh auto 0 auto;
   background-color: #FEFEFC;
   border-radius: 25px;
@@ -14,7 +26,7 @@
 }
 
 .restaurant_pic {
-  width: 400px;
+  width: var(--card-width);
   height: 400px;      /* TODO: make responsive */
   border-radius: 20px;
   object-fit: cover;

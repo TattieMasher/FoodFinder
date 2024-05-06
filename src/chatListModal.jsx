@@ -38,7 +38,7 @@ function ChatList({ isOpen, onClose }) {
   if (selectedChat) {
     return <ChatDetail chatId={selectedChat} onClose={() => setSelectedChat(null)} />;
   }
-  
+
 // TODO: Sort this "full" so that it looks good for large screens as well.
   return (
     <Modal size="full" isOpen={isOpen} onClose={handleModalClose}>
@@ -49,7 +49,11 @@ function ChatList({ isOpen, onClose }) {
         <ModalBody>
           <List spacing={3}>
             {chats.length > 0 ? chats.map(([id, chat]) => (
-              <ListItem key={id} onClick={() => openChat(id)} cursor="pointer">
+              <ListItem borderRadius={10}
+                padding={2}
+                bg="gray.100"
+                key={id}
+                onClick={() => openChat(id)} cursor="pointer">
                 <strong>{chat.name}</strong>
               </ListItem>
             )) : <p>No active chats</p>}

@@ -11,6 +11,11 @@ export default function Restaurant({ data, userLocation, handleDislike, handleLi
   const [dragDirection, setDragDirection] = useState(null); // Track the direction of the drag, defaulting to no direction
   const [{ x, opacity }, set] = useSpring(() => ({ x: 0, opacity: 1 }));
   
+  // Set drag activation threshold based on screen width
+  const smallScreenThreshold = 0.25;
+  const largeScreenThreshold = 0.15;
+  const threshold = window.innerWidth < 400 ? smallScreenThreshold : largeScreenThreshold;
+  
   const bind = useDrag(({ down, movement: [mx], direction: [xDir], distance }) => {
     // Update the drag direction immediately upon moving, and maintain it unless the drag ends
     if (down && distance > window.innerWidth * 0.05) {
@@ -21,8 +26,8 @@ export default function Restaurant({ data, userLocation, handleDislike, handleLi
       setDragDirection(null); // Reset the drag direction when the drag ends
     }
 
-    // If drag distance is >15%
-    if (down && distance > window.innerWidth * 0.15) {
+    // Use the dynamic dragging threshold
+    if (down && distance > window.innerWidth * threshold) {
       if (xDir < 0) handleDislike(data.id); // To left
       else if (xDir > 0) handleLike(data.id); // To right
     }

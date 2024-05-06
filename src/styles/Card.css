@@ -21,7 +21,7 @@
   padding-bottom: 10px;
   padding-bottom: 10px;
   color: #4A4A48;
-  touch-action: pan-y pan-x;
+  touch-action: none;
   user-select: none;
 }
 

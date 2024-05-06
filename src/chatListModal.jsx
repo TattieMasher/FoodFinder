@@ -9,31 +9,48 @@ import {
   List,
   ListItem
 } from '@chakra-ui/react';
+import ChatDetail from './chatDetail';
 
 function ChatList({ isOpen, onClose }) {
   const [chats, setChats] = useState([]);
+  const [selectedChat, setSelectedChat] = useState(null);
 
   useEffect(() => {
+    const loadChats = () => {
+      const chatData = JSON.parse(localStorage.getItem('chats')) || {};
+      setChats(Object.entries(chatData).filter(([_, data]) => data.liked));
+    };
+
     if (isOpen) {
-      const loadChats = () => {
-        const chatData = JSON.parse(localStorage.getItem('chats')) || {};
-        setChats(Object.entries(chatData).filter(([_, data]) => data.liked));
-      };
       loadChats();
     }
   }, [isOpen]);
 
+  const openChat = (id) => {
+    setSelectedChat(id);
+  };
+
+  const handleModalClose = () => {
+    setSelectedChat(null);
+    onClose();
+  };
+
+  if (selectedChat) {
+    return <ChatDetail chatId={selectedChat} onClose={() => setSelectedChat(null)} />;
+  }
+  
+// TODO: Sort this "full" so that it looks good for large screens as well.
   return (
-    <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
+    <Modal size="full" isOpen={isOpen} onClose={handleModalClose}>
       <ModalOverlay />
-      <ModalContent minH={"400px"}>
+      <ModalContent>
         <ModalHeader>Chats</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <List spacing={3}>
             {chats.length > 0 ? chats.map(([id, chat]) => (
-              <ListItem key={id} onClick={() => onClose(id)} cursor="pointer">
-                <strong>{chat.name}</strong> - {chat.messages[chat.messages.length - 1].text}
+              <ListItem key={id} onClick={() => openChat(id)} cursor="pointer">
+                <strong>{chat.name}</strong>
               </ListItem>
             )) : <p>No active chats</p>}
           </List>

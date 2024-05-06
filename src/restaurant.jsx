@@ -12,7 +12,7 @@ export default function Restaurant({ data, userLocation, handleDislike, handleLi
   const [{ x, opacity }, set] = useSpring(() => ({ x: 0, opacity: 1 }));
   
   // Set drag activation threshold based on screen width
-  const smallScreenThreshold = 0.25;
+  const smallScreenThreshold = 0.35;
   const largeScreenThreshold = 0.15;
   const threshold = window.innerWidth < 400 ? smallScreenThreshold : largeScreenThreshold;
   

@@ -34,6 +34,12 @@ import {
       setLocalRadius(valueAsNumber);
     };
 
+    const handleDeletion = () => {
+      localStorage.clear();
+      console.log("Deleted all localStorage data");
+      window.location.reload();
+    }
+
     return (
       <>
         <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -55,7 +61,7 @@ import {
               </FormControl>
             </ModalBody>
             <ModalFooter display="flex" justifyContent="space-between">
-              <Button colorScheme="red" onClick={onClose}>
+              <Button colorScheme="red" onClick={handleDeletion}>
                 Delete data
               </Button>
               <Button colorScheme="blue" mr={3} onClick={handleSave}>

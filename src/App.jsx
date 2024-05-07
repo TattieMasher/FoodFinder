@@ -69,7 +69,7 @@ function App() {
               headers: {
                 'Content-Type': 'application/json',
                 'X-Goog-Api-Key': apiKey,
-                'X-Goog-FieldMask': 'places.id,places.formattedAddress,places.location,places.displayName,places.googleMapsUri,places.priceLevel,places.websiteUri,places.photos,places.regularOpeningHours,places.priceLevel,places.rating,places.national_phone_number'
+                'X-Goog-FieldMask': 'places.id,places.formattedAddress,places.location,places.displayName,places.googleMapsUri,places.priceLevel,places.websiteUri,places.photos,places.regularOpeningHours,places.priceLevel,places.rating,places.national_phone_number,places.rating,places.dineIn,places.delivery,places.takeout,places.businessStatus,places.websiteUri'
               }
             });
 

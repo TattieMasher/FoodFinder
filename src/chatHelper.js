@@ -5,10 +5,26 @@ const getRandomItem = (items) => {
 
 // Arrays for different parts of the message
 const greetings = ["Hey", "Hello", "Hi"];
-const closingPhrases = [
+const visitingPhrase = [
   "Come visit me now!",
   "Don't miss out! Come here."
 ];
+const ratingPhrase = [
+  "People think I'm a",
+  "If I had to rate myself, I'm definitely",
+  "On a good day, I'm easily a"
+]
+const generateDeliveryMessage = () => {
+  // TODO: Use delivery, takeout and dineIn for a description message
+}
+const generateAvailability = (restaurantData) => {
+  let availabilityString = "";
+
+  for(let i = 0; i < restaurantData.regularOpeningHours.weekdayDescriptions.length; i++) {
+    availabilityString += `${restaurantData.regularOpeningHours.weekdayDescriptions[i]} <br>`;
+  }
+  return availabilityString;
+}
 
 // Function to generate messages based on restaurant data
 const generateInitialMessages = (restaurantData) => {
@@ -47,9 +63,13 @@ const generateInitialMessages = (restaurantData) => {
 
   // Build the full messages as an array
   const messages = [
-    { text: `${getRandomItem(greetings)}, ${getRandomItem(pricePhrase)}`, timestamp: new Date().toISOString() },
-    { text: `I'm at <a href="${encodeURI(restaurantData.googleMapsUri)}" target="_blank">${restaurantData.formattedAddress}</a>.`, timestamp: new Date().toISOString() },
-    { text: `${getRandomItem(closingPhrases)} Or give me a call on ${restaurantData.nationalPhoneNumber}`, timestamp: new Date().toISOString() }
+    { text: `${getRandomItem(greetings)}, ${getRandomItem(pricePhrase)}. ${getRandomItem(ratingPhrase)} ${restaurantData.rating * 2}/10.`, timestamp: new Date().toISOString() },
+    { text: `I'm at <a href="${encodeURI(restaurantData.googleMapsUri)}" target="_blank">${restaurantData.formattedAddress}</a>. ${getRandomItem(visitingPhrase)}`, timestamp: new Date().toISOString() },
+    { text: `Or give me a call on ${restaurantData.nationalPhoneNumber}. You can reach me...`, timestamp: new Date().toISOString() },
+    { text: generateAvailability(restaurantData), timestamp: new Date().toISOString() }
+    // TODO: use these fields-
+    //    rating, dineIn, delivery, takeout, websiteUri, regularOpeningHours
+    //    businessStatus (The allowed values include: OPERATIONAL, CLOSED_TEMPORARILY, and CLOSED_PERMANENTLY)
   ];
 
   return messages;

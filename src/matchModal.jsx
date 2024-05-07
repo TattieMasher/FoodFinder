@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import './styles/Match.css'
 
 import {
@@ -10,6 +10,16 @@ import {
   } from '@chakra-ui/react';
   
   export default function MatchModal({ isOpen, onClose, isMatch, setIsMatch }) {
+
+    useEffect(() => {
+      if (isOpen) {
+          const timer = setTimeout(() => {
+              onClose();
+          }, 1250);
+
+          return () => clearTimeout(timer); // Stop tracking time once cleared
+      }
+  }, [isOpen, onClose]);
 
     return (
       <>

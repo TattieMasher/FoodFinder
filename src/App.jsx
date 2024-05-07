@@ -69,7 +69,7 @@ function App() {
               headers: {
                 'Content-Type': 'application/json',
                 'X-Goog-Api-Key': apiKey,
-                'X-Goog-FieldMask': 'places.id,places.formattedAddress,places.location,places.displayName,places.googleMapsUri,places.priceLevel,places.websiteUri,places.photos'
+                'X-Goog-FieldMask': 'places.id,places.formattedAddress,places.location,places.displayName,places.googleMapsUri,places.priceLevel,places.websiteUri,places.photos,places.regularOpeningHours,places.priceLevel,places.rating,places.national_phone_number'
               }
             });
 
@@ -78,6 +78,8 @@ function App() {
       
             setRestaurants(filteredRestaurants);
             setLoading(false);
+
+            console.log("Respone body: ", response);
           } catch (error) {
             console.error('Error fetching data: ', error);
             setRestaurants([]);

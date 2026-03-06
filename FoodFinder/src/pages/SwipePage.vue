@@ -123,7 +123,8 @@ const resetSwipe = () => {
     <!-- Header -->
     <div class="swipe-header">
       <h1>🍽️ FoodFinder</h1>
-      <p>Find your true love: your new favourite local restaurant!</p>
+      <p>Find your your true soulmate: your new favourite local restaurant</p>
+      
     </div>
 
     <!-- Swipe Interface -->

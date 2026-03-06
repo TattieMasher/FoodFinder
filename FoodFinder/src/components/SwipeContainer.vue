@@ -39,14 +39,14 @@ const remainingCount = computed(() => {
 
 const onSwipeLeft = (restaurant: Restaurant) => {
   if (isAnimating.value) return
-  
+
   isAnimating.value = true
   emit('restaurant-passed', restaurant)
 }
 
 const onSwipeRight = (restaurant: Restaurant) => {
   if (isAnimating.value) return
-  
+
   isAnimating.value = true
   emit('restaurant-liked', restaurant)
 }
@@ -54,7 +54,7 @@ const onSwipeRight = (restaurant: Restaurant) => {
 const onAnimationComplete = () => {
   currentIndex.value++
   isAnimating.value = false
-  
+
   if (currentIndex.value >= props.restaurants.length) {
     emit('stack-empty')
   }
@@ -87,9 +87,9 @@ const passCurrentRestaurant = () => {
         <span class="progress-fraction">{{ currentIndex + 1 }} / {{ restaurants.length }}</span>
       </div>
       <div class="progress-track">
-        <div 
+        <div
           class="progress-fill"
-          :style="{ width: `${((currentIndex) / restaurants.length) * 100}%` }"
+          :style="{ width: `${(currentIndex / restaurants.length) * 100}%` }"
         ></div>
       </div>
     </div>
@@ -119,16 +119,12 @@ const passCurrentRestaurant = () => {
 
     <!-- Action Buttons -->
     <div class="action-buttons" v-if="hasMoreCards">
-      <button 
-        class="action-btn pass-btn"
-        @click="passCurrentRestaurant"
-        :disabled="isAnimating"
-      >
+      <button class="action-btn pass-btn" @click="passCurrentRestaurant" :disabled="isAnimating">
         <span class="btn-icon">👎</span>
         <span class="btn-text">Pass</span>
       </button>
 
-      <button 
+      <button
         class="action-btn details-btn"
         @click="onTapDetails(currentRestaurant)"
         :disabled="isAnimating"
@@ -137,11 +133,7 @@ const passCurrentRestaurant = () => {
         <span class="btn-text">Info</span>
       </button>
 
-      <button 
-        class="action-btn like-btn"
-        @click="likeCurrentRestaurant"
-        :disabled="isAnimating"
-      >
+      <button class="action-btn like-btn" @click="likeCurrentRestaurant" :disabled="isAnimating">
         <span class="btn-icon">❤️</span>
         <span class="btn-text">Like</span>
       </button>
@@ -157,7 +149,7 @@ const passCurrentRestaurant = () => {
   min-height: 100vh;
   padding: 1rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  
+
   @include respond-to(md) {
     padding: 0.5rem;
   }
@@ -167,7 +159,7 @@ const passCurrentRestaurant = () => {
   width: 100%;
   max-width: 350px;
   margin-bottom: 2rem;
-  
+
   @include respond-to(md) {
     max-width: 320px;
     margin-bottom: 1rem;
@@ -194,7 +186,7 @@ const passCurrentRestaurant = () => {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #4CAF50, #8BC34A);
+  background: linear-gradient(90deg, #4caf50, #8bc34a);
   border-radius: 2px;
   transition: width 0.3s ease;
 }
@@ -205,13 +197,13 @@ const passCurrentRestaurant = () => {
   max-width: 350px;
   height: 600px;
   margin-bottom: 2rem;
-  
+
   @include respond-to(md) {
     max-width: 320px;
     height: 580px;
     margin-bottom: 1.5rem;
   }
-  
+
   // Position all cards absolutely for stacking
   .restaurant-card {
     position: absolute;
@@ -225,18 +217,18 @@ const passCurrentRestaurant = () => {
   text-align: center;
   color: white;
   padding: 4rem 2rem;
-  
+
   .empty-icon {
     font-size: 4rem;
     margin-bottom: 1rem;
   }
-  
+
   h2 {
     font-size: 2rem;
     margin-bottom: 1rem;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   }
-  
+
   p {
     font-size: 1.1rem;
     opacity: 0.9;
@@ -266,7 +258,7 @@ const passCurrentRestaurant = () => {
   justify-content: center;
   width: 100%;
   max-width: 350px;
-  
+
   @include respond-to(md) {
     max-width: 320px;
     gap: 0.75rem;
@@ -288,68 +280,68 @@ const passCurrentRestaurant = () => {
   transition: all 0.2s ease;
   font-weight: 600;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  
+
   &:hover:not(:disabled) {
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   }
-  
+
   &:active {
     transform: translateY(0);
   }
-  
+
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none !important;
   }
-  
+
   .btn-icon {
     font-size: 1.5rem;
   }
-  
+
   .btn-text {
     font-size: 0.9rem;
     color: $dark;
   }
-  
+
   &.pass-btn {
     .btn-text {
       color: $danger;
     }
-    
+
     &:hover:not(:disabled) {
       background: rgba($danger, 0.1);
     }
   }
-  
+
   &.like-btn {
     .btn-text {
       color: $success;
     }
-    
+
     &:hover:not(:disabled) {
       background: rgba($success, 0.1);
     }
   }
-  
+
   &.details-btn {
     .btn-text {
       color: $info;
     }
-    
+
     &:hover:not(:disabled) {
       background: rgba($info, 0.1);
     }
   }
-  
+
   @include respond-to(md) {
     padding: 0.75rem 0.25rem;
-    
+
     .btn-icon {
       font-size: 1.25rem;
     }
-    
+
     .btn-text {
       font-size: 0.8rem;
     }

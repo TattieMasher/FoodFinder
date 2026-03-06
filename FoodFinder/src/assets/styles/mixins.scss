@@ -17,17 +17,17 @@
   background-color: $bg-color;
   color: $text-color;
   border: 1px solid $bg-color;
-  
+
   &:hover:not(:disabled) {
     background-color: darken($bg-color, $hover-darken);
     border-color: darken($bg-color, $hover-darken);
     transform: translateY(-2px);
   }
-  
+
   &:active {
     transform: translateY(0);
   }
-  
+
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
@@ -81,8 +81,12 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @mixin slide-up($duration: 0.3s) {

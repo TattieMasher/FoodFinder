@@ -9,20 +9,20 @@ const router = createRouter({
       name: 'swipe',
       component: SwipePage,
       meta: {
-        title: 'FoodFinder - Discover Restaurants'
-      }
+        title: 'FoodFinder - Discover Restaurants',
+      },
     },
     // Redirect all other routes to swipe
     {
       path: '/:pathMatch(.*)*',
-      redirect: '/'
-    }
+      redirect: '/',
+    },
   ],
 })
 
 // Navigation guard to update page title
 router.beforeEach((to) => {
-  document.title = to.meta?.title as string || 'FoodFinder'
+  document.title = (to.meta?.title as string) || 'FoodFinder'
 })
 
 export default router
